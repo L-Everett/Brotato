@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "简单",
+    "describe" : "无修改",
+    "levelName": "level0"
+  },
+  {
+    "id": 2,
+    "name": "普通",
+    "describe" : "出现新敌人",
+    "levelName": "level1"
+  },
+  {
+    "id": 3,
+    "name": "困难",
+    "describe" : "精英怪和敌群出现",
+    "levelName": "level2"
+  },
+  {
+    "id": 4,
+    "name": "极难",
+    "describe" : "敌人更加强大",
+    "levelName": "level3"
+  },
+  {
+    "id": 5,
+    "name": "地狱",
+    "describe" : "更多的精英怪和敌群出现",
+    "levelName": "level4"
+  },
+  {
+    "id": 6,
+    "name": "末日",
+    "describe" : "同时出现两个头目",
+    "levelName": "level5"
+  }
+]
