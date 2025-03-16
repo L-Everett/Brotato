@@ -30,6 +30,7 @@ public class RoleUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
             button.onClick.AddListener(() =>
             {
+                RenewUI();
                 OnSelectRole();
             });
         }
@@ -58,24 +59,24 @@ public class RoleUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         bg.color = new Color(207 / 255f, 207 / 255f, 207 / 255f);
-        RenewUI(roleData);
+        RenewUI();
     }
 
-    private void RenewUI(RoleData r)
+    public void RenewUI()
     {
-        if(r.unlock == 0)
+        if(roleData.unlock == 0)
         {
             RoleSelectPanel.instance.roleName.text = "£¿£¿£¿";
-            RoleSelectPanel.instance.roleDescribe.text = r.unlockConditions;
+            RoleSelectPanel.instance.roleDescribe.text = roleData.unlockConditions;
             RoleSelectPanel.instance.roleRecord.text = "ÉÐÎÞ¼ÇÂ¼";
             RoleSelectPanel.instance.avatar.sprite = Resources.Load<Sprite>("Image/UI/Ëø");
         }
         else
         {
-            RoleSelectPanel.instance.roleName.text = r.name;
-            RoleSelectPanel.instance.roleDescribe.text = r.describe;
-            RoleSelectPanel.instance.roleRecord.text = GetRecord(r.record);
-            RoleSelectPanel.instance.avatar.sprite = Resources.Load<Sprite>(r.avatar);
+            RoleSelectPanel.instance.roleName.text = roleData.name;
+            RoleSelectPanel.instance.roleDescribe.text = roleData.describe;
+            RoleSelectPanel.instance.roleRecord.text = GetRecord(roleData.record);
+            RoleSelectPanel.instance.avatar.sprite = Resources.Load<Sprite>(roleData.avatar);
         }
     }
 

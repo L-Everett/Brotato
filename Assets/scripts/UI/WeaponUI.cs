@@ -22,23 +22,28 @@ public class WeaponUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         avatar.sprite = Resources.Load<Sprite>(data.avatar);
         button.onClick.AddListener(() =>
         {
-            GameManager.Instance.WeaponDatas.Add(data);
-
-            GameObject weaponContentClone = Instantiate(WeaponSelectPanel.instance.weaponDetails, DifficultySelectPanel.instance.difficultyContent);
-            weaponContentClone.transform.SetSiblingIndex(0);
-
-            GameObject roleContentClone = Instantiate(RoleSelectPanel.instance.roleDetail, DifficultySelectPanel.instance.difficultyContent);
-            roleContentClone.transform.SetSiblingIndex(0);
-
-            WeaponSelectPanel.instance.canvasGroup.alpha = 0;
-            WeaponSelectPanel.instance.canvasGroup.interactable = false;
-            WeaponSelectPanel.instance.canvasGroup.blocksRaycasts = false;
-
-            DifficultySelectPanel.instance.canvasGroup.alpha = 1;
-            DifficultySelectPanel.instance.canvasGroup.interactable = true;
-            DifficultySelectPanel.instance.canvasGroup.blocksRaycasts = true;
-
+            RenewUI();
+            OnSelectWeapon();
         });
+    }
+
+    public void OnSelectWeapon()
+    {
+        GameManager.Instance.WeaponDatas.Add(weaponData);
+
+        GameObject weaponContentClone = Instantiate(WeaponSelectPanel.instance.weaponDetails, DifficultySelectPanel.instance.difficultyContent);
+        weaponContentClone.transform.SetSiblingIndex(0);
+
+        GameObject roleContentClone = Instantiate(RoleSelectPanel.instance.roleDetail, DifficultySelectPanel.instance.difficultyContent);
+        roleContentClone.transform.SetSiblingIndex(0);
+
+        WeaponSelectPanel.instance.canvasGroup.alpha = 0;
+        WeaponSelectPanel.instance.canvasGroup.interactable = false;
+        WeaponSelectPanel.instance.canvasGroup.blocksRaycasts = false;
+
+        DifficultySelectPanel.instance.canvasGroup.alpha = 1;
+        DifficultySelectPanel.instance.canvasGroup.interactable = true;
+        DifficultySelectPanel.instance.canvasGroup.blocksRaycasts = true;
     }
     // Start is called before the first frame update
     void Start()
@@ -63,7 +68,7 @@ public class WeaponUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         RenewUI();
     }
 
-    private void RenewUI()
+    public void RenewUI()
     {
         WeaponSelectPanel.instance.avatarWeapon.sprite = Resources.Load<Sprite>(weaponData.avatar);
         WeaponSelectPanel.instance.weaponName.text = weaponData.name;

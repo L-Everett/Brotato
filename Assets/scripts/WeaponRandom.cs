@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RoleRandom : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class WeaponRandom : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Button button;
     public Image bg;
-    public List<RoleUI> unlockRoles = new List<RoleUI>();
+    public Button button;
+    public List<WeaponUI> weapons = new List<WeaponUI>();
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -25,22 +25,21 @@ public class RoleRandom : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void Awake()
     {
-        button = GetComponent<Button>();
         bg = GetComponent<Image>();
+        button = GetComponent<Button>();
     }
     // Start is called before the first frame update
     void Start()
     {
         button.onClick.AddListener(() =>
         {
-            foreach (RoleUI role in RoleSelectPanel.instance.roleList.GetComponentsInChildren<RoleUI>())
+            foreach (WeaponUI weapon in WeaponSelectPanel.instance.weaponList.GetComponentsInChildren<WeaponUI>())
             {
-                if (role.roleData.unlock == 1)
-                {
-                    unlockRoles.Add(role);
-                }
+                weapons.Add(weapon);
             }
-
+            WeaponUI w = GameManager.Instance.RandomSelect<WeaponUI>(weapons) as WeaponUI;
+            w.RenewUI();
+            w.OnSelectWeapon();
         });
     }
 

@@ -1,5 +1,8 @@
-﻿public class WeaponData
+﻿using UnityEngine;
+
+public class WeaponData
 {
+    [SerializeField]
     public int id;
     public string name;
     public string avatar;

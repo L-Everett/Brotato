@@ -50,7 +50,7 @@ public class WeaponSelectPanel : MonoBehaviour
 
         foreach (WeaponData weapon in weaponDatas)
         {
-            WeaponUI weaponUI =  Instantiate(weaponPrefab, weaponList).GetComponent<WeaponUI>();
+            WeaponUI weaponUI = Instantiate(weaponPrefab, weaponList).GetComponent<WeaponUI>();
             weaponUI.SetData(weapon);
         }
     }

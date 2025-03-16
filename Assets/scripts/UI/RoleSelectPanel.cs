@@ -42,7 +42,7 @@ public class RoleSelectPanel : MonoBehaviour
     {
         foreach (RoleData roleData in roleDatas)
         {
-            RoleUI roleUI= GameObject.Instantiate(rolePrefabs, roleList).GetComponent<RoleUI>();
+            RoleUI roleUI = Instantiate(rolePrefabs, roleList).GetComponent<RoleUI>();
             roleUI.SetData(roleData);
         }
     }

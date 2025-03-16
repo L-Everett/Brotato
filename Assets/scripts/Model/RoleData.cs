@@ -1,6 +1,8 @@
-﻿
+﻿using UnityEngine;
+
 public class RoleData
 {
+    [SerializeField]
     public int id;
     public string name;
     public string avatar;

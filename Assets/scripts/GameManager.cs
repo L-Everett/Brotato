@@ -3,7 +3,8 @@ using UnityEngine;
 using System;
 
 public class GameManager : MonoBehaviour
-{   
+{
+    [SerializeField]
     public static GameManager Instance;
     public RoleData RoleData;
     public List<WeaponData> WeaponDatas = new List<WeaponData>();
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
         int index = random.Next(0, list.Count);
         return list[index];
     }
+
     // Start is called before the first frame update
     void Start()
     {
