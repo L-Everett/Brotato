@@ -1,4 +1,0 @@
-repository "Brotato@tj_disillusion97@cloud.cn"
-  path "/"
-    br "/main"
-    co "/main"
