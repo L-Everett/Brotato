@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Money
   layers:
   - Default
   - TransparentFX
@@ -11,8 +13,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
@@ -40,4 +42,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Map
+    uniqueID: 432156455
+    locked: 0
+  - name: Enemy
+    uniqueID: 511936137
+    locked: 0
+  - name: Player
+    uniqueID: 543649241
+    locked: 0
+  - name: Items
+    uniqueID: 2181331235
+    locked: 0
+  - name: Effect
+    uniqueID: 939360501
+    locked: 0
+  - name: UI
+    uniqueID: 1388824211
     locked: 0

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-
+﻿using System;
+using UnityEngine;
+[Serializable]
 public class RoleData
 {
-    [SerializeField]
     public int id;
     public string name;
     public string avatar;

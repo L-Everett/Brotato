@@ -13,9 +13,9 @@ public class WeaponRandom : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData eventData)
     {
         bg.color = new Color(207 / 255f, 207 / 255f, 207 / 255f);
-        RoleSelectPanel.instance.avatar.sprite = Resources.Load<Sprite>("Image/UI/问号");
-        RoleSelectPanel.instance.roleName.text = "???";
-        RoleSelectPanel.instance.roleDescribe.text = "随机选择";
+        WeaponSelectPanel.instance.avatarWeapon.sprite = Resources.Load<Sprite>("Image/UI/问号");
+        WeaponSelectPanel.instance.weaponName.text = "???";
+        WeaponSelectPanel.instance.weaponDescription.text = "随机选择";
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -4,15 +4,18 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
+    
     public static GameManager Instance;
     public RoleData RoleData;
     public List<WeaponData> WeaponDatas = new List<WeaponData>();
     public DifficulityData difficulityData;
+    public int currentWave;
 
     private void Awake()
     {
         Instance = this;
+        currentWave = 1;
+
         DontDestroyOnLoad(gameObject);
     }
 

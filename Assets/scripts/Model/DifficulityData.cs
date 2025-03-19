@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-
+﻿using System;
+using UnityEngine;
+[Serializable]
 public class DifficulityData
 {
-    [SerializeField]
     public int id;
     public string name;
     public string describe;
