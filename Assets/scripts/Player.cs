@@ -14,6 +14,11 @@ public class Player : MonoBehaviour
     public float maxHp;
     public bool isDead;
 
+    public int wId;
+    public int wCount;
+
+    public bool playerMove;
+
     private void Awake()
     {
         Instance = this;
@@ -25,13 +30,32 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+/*        if (GameManager.Instance != null)
+        {
+            wCount = GameManager.Instance.weaponCount;
+            wId = GameManager.Instance.weaponData.id;
+        }*/
+
+        for (int i = 0; i < wCount; i++)
+        {
+            ActivateWeapon(i + 1, wId);
+        }
+        playerMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerMove();
+        if (playerMove)
+        {
+            PlayerMove();
+        }
+    }
+
+    public void ActivateWeapon(int positionId, int weaponId)
+    {
+        string name = "w" + positionId;
+        GameObject.Find(name).transform.GetChild(weaponId).gameObject.SetActive(true);
     }
 
     public void PlayerMove()
@@ -82,27 +106,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Attack()
-    {
-
-    }
-
     public void Death()
     {
         isDead = true;
+        playerMove = false;
         animatorLeg1.speed = 0;
         animatorLeg2.speed = 0;
 
         LevelController.instance.BadGame();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Money"))
-        {
-            Destroy(collision.gameObject);
-            money++;
-            GamePanel.instance.RenewMoney();
-        }
     }
 }

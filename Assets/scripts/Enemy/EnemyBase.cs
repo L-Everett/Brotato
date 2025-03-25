@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
@@ -12,10 +14,12 @@ public class EnemyBase : MonoBehaviour
     public int proExp;      //提供的经验值
 
     public GameObject moneyPrefab;
+    public GameObject damageTextPrefab;
 
     private void Awake()
     {
         moneyPrefab = Resources.Load<GameObject>("prefabs/Money");
+        damageTextPrefab = Resources.Load<GameObject>("prefabs/Damage");
     }
 
     public void Update()
@@ -86,6 +90,7 @@ public class EnemyBase : MonoBehaviour
 
     public void Injured(float attack)
     {
+        StartCoroutine(ShowDamage(attack));
         if (hp - attack <= 0)
         {
             hp = 0;
@@ -107,4 +112,30 @@ public class EnemyBase : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void Kill()
+    {
+        Destroy(gameObject);
+    }
+
+    IEnumerator ShowDamage(float damageValue)
+    {
+        Vector3 worldOffset = Vector3.up * 0.5f;
+        Vector3 worldPosition = transform.position + worldOffset;
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+
+        GameObject textObj = Instantiate(damageTextPrefab, screenPosition, Quaternion.identity);
+        float showTime = textObj.GetComponent<DamageUI>().showTime;
+        textObj.transform.SetParent(GameObject.Find("Canvas").transform);
+
+        textObj.GetComponent<TextMeshProUGUI>().text = "-" + damageValue;
+        while (showTime > 0 && textObj != null)
+        {
+            showTime -= Time.deltaTime;
+            worldOffset += Vector3.up * Time.deltaTime;
+            Vector3 worldPos = transform.position + worldOffset;
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+            textObj.transform.position = screenPos;
+            yield return null;
+        }
+    }
 }

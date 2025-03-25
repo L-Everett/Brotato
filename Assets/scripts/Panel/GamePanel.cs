@@ -46,7 +46,7 @@ public class GamePanel : MonoBehaviour
 
     public void RenewExp()
     {
-        expSlider.value = Player.Instance.exp % 12 / 12;
+        expSlider.value = Player.Instance.exp % 12 / 12f;
         expCount.text = Player.Instance.exp % 12 + " / 12";
         grade.text = "Lv." + Player.Instance.exp / 12;
     }
@@ -69,6 +69,7 @@ public class GamePanel : MonoBehaviour
 
     public void RenewWaveCount()
     {
-        waveCount.text = "µÚ " + GameManager.Instance.currentWave + " ²¨";
+        waveCount.text = "µÚ " + GameManager.Instance.currentWave + " ¹Ø";
+        GameManager.Instance.currentWave++;
     }
 }

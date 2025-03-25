@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,8 +6,10 @@ public class LevelController : MonoBehaviour
 {
     public static LevelController instance;
     public float waveTimer;
+    public float initTime;   //初始场景时间
     public float frushTimer; //刷怪计时器
     public float frushInterval; //刷怪间隔
+    public bool generate;
     public Transform map;
     public GameObject failPanel;
     public GameObject successPanel;
@@ -26,9 +27,20 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        waveTimer = 55 + 5 * GameManager.Instance.currentWave;
-        frushTimer = 2;
-        frushInterval = 2;
+        waveTimer = 0;
+        initTime = 5f;
+        RenewTime();
+        frushTimer = 2f;
+        frushInterval = 3f;
+        generate = true;
+    }
+
+    public void RenewTime()
+    {
+        if (waveTimer <= 60f)
+        {
+            waveTimer = initTime + 10 * GameManager.Instance.currentWave;
+        }
     }
 
     IEnumerator GenerateEnemies()
@@ -62,7 +74,7 @@ public class LevelController : MonoBehaviour
             }    
         }
 
-        if(frushTimer > 0)
+        if(frushTimer > 0 && generate)
         {
             frushTimer -= Time.deltaTime;
             if (frushTimer <= 0)
@@ -78,9 +90,24 @@ public class LevelController : MonoBehaviour
 
     public void GoodGame()
     {
-        Time.timeScale = 0;
         successPanel.GetComponent<CanvasGroup>().alpha = 1;
-        StartCoroutine(Gomenu());
+        generate = false;
+        Player.Instance.playerMove = false;
+        foreach(Transform item in GameObject.Find("Items").transform)
+        {
+            if (item.GetComponent<Item>())
+            {
+                item.GetComponent<Item>().GoPlayer(Player.Instance.transform.position);
+            }
+        }
+        foreach (Transform item in GameObject.Find("Enemies").transform)
+        {
+            if (item.GetComponent<EnemyBase>())
+            {
+                item.GetComponent<EnemyBase>().Kill();
+            }
+        }
+        StartCoroutine(NextLevel());
     }
 
     public void BadGame()
@@ -95,5 +122,17 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSecondsRealtime(3);
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
+    }
+
+    IEnumerator NextLevel()
+    {
+        yield return new WaitForSecondsRealtime(3);
+        //Time.timeScale = 1;
+        RenewTime();
+        GamePanel.instance.RenewWaveCount();
+        frushInterval /= 1.5f;
+        successPanel.GetComponent<CanvasGroup>().alpha = 0;
+        generate = true;
+        Player.Instance.playerMove = true;
     }
 }

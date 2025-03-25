@@ -29,7 +29,7 @@ public class WeaponUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnSelectWeapon()
     {
-        GameManager.Instance.WeaponDatas.Add(weaponData);
+        GameManager.Instance.weaponData = weaponData;
 
         GameObject weaponContentClone = Instantiate(WeaponSelectPanel.instance.weaponDetails, DifficultySelectPanel.instance.difficultyContent);
         weaponContentClone.transform.SetSiblingIndex(0);

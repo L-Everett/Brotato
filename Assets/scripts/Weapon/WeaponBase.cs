@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using System.Net.Mail;
 using UnityEngine;
 
 public class WeaponBase : MonoBehaviour
@@ -11,18 +10,32 @@ public class WeaponBase : MonoBehaviour
     public bool isCooling = false;
     public bool isAiming = true;
     public float attackTimer = 0;
-    public float moveSpeed;
+    public float moveSpeed = 10f;
     public Transform enemy;
     public float iniAngleZ;
+    public bool flipX;
+    public bool flipY;
+    public float angleOffset;
 
-    private void Awake()
+    public void Awake()
     {
         iniAngleZ = transform.eulerAngles.z;
+        angleOffset = 0;
+        flipX = GetComponent<SpriteRenderer>().flipX;
+        flipY = GetComponent<SpriteRenderer>().flipY;
+
+        if (GameManager.Instance)
+        {
+            data = GameManager.Instance.weaponData;
+        }
     }
 
     public void Update()
     {
-        Aiming();
+        if (isAiming)
+        {
+            Aiming();
+        }
 
         if (!isCooling && isAttack)
         {
@@ -34,8 +47,8 @@ public class WeaponBase : MonoBehaviour
         {
             attackTimer += Time.deltaTime;
 
-            if (attackTimer >= data.cooling) 
-            { 
+            if (attackTimer >= data.cooling)
+            {
                 attackTimer = 0;
                 isCooling = false;
             }
@@ -49,7 +62,8 @@ public class WeaponBase : MonoBehaviour
 
         if (enemiesInRange.Length > 0)
         {
-            isAttack = true;
+            StartCoroutine(SetIsAttack());
+            //isAttack = true;
             Collider2D nearestEnemy = enemiesInRange.
                 OrderBy(enemy=>Vector2.Distance(transform.position,enemy.transform.position)).
                 First();
@@ -57,16 +71,25 @@ public class WeaponBase : MonoBehaviour
 
             Vector2 enemyPos = enemy.position;
             Vector2 direction = enemyPos - (Vector2)transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angle);
+            float aimAngleZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            GetComponent<SpriteRenderer>().flipX = false;
+            GetComponent<SpriteRenderer>().flipY = false;
+            transform.eulerAngles = new Vector3(0, 0, aimAngleZ - angleOffset);
         }
         else
         {
             isAttack = false;
             enemy = null;
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, iniAngleZ);
+            GetComponent<SpriteRenderer>().flipX = flipX;
+            GetComponent<SpriteRenderer>().flipY = flipY;
+            transform.eulerAngles = new Vector3(0, 0, iniAngleZ);
         }
+    }
+
+    IEnumerator SetIsAttack()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isAttack = true;
     }
 
     public void Fire()
@@ -76,40 +99,14 @@ public class WeaponBase : MonoBehaviour
             return;
         }
 
-        gameObject.GetComponent<EdgeCollider2D>().enabled = true;
-
         isAiming = false;
-        StartCoroutine(GoPosition());
+
+        DoAttack();
 
         isCooling = true;
     }
 
-    IEnumerator GoPosition()
-    {
-        var enemyPos = enemy.transform.position;
-        while(Vector2.Distance(transform.position,enemyPos) > 0.1f)
-        {
-            Vector3 direction = (enemyPos - transform.position).normalized;
+    
 
-            Vector3 moveAmount = direction * moveSpeed * Time.deltaTime;
-
-            transform.position += moveAmount;
-
-            yield return null;
-        }
-
-        gameObject.GetComponent<EdgeCollider2D>().enabled = false;
-
-        StartCoroutine(ReturnPosition());
-    }
-
-    IEnumerator ReturnPosition()
-    {
-        while ((Vector3.zero - transform.localPosition).magnitude > 0.1f)
-        {
-            Vector3 direction = (Vector3.zero - transform.localPosition).normalized;
-            transform.localPosition += direction * moveSpeed * Time.deltaTime;
-            yield return null;
-        }
-    }
+    public virtual void DoAttack() { }
 }
